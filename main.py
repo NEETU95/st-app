@@ -39,10 +39,12 @@ class PdfExtractionHandler(RequestHandler):
             self.write(f"Error processing PDF: {str(e)}")
 
 def pdf_extraction(pdf_info:str):
+    
     try:
         cnopts = pysftp.CnOpts()
         cnopts.hostkeys = None
         ftp = pysftp.Connection('testnovumgen.topiatech.co.uk', username='pvtestuser', password='Umlup01cli$$6969',cnopts=cnopts)
+        print("111111111111")
         with ftp.cd('/var/sftp/upload/pvtestusers/'):
             files = ftp.listdir()
             for file in files:
@@ -57,7 +59,8 @@ def pdf_extraction(pdf_info:str):
         source_file_reader = PdfReader(source_document)
         # weekly_reader = PdfReader('Weekly literature hits PDF.pdf')
         weekly_reader_num_pages = len(weekly_reader.pages)
-
+        print("222222222222222")
+        
         source_file_num_pages = len(source_file_reader.pages)
         weekly_text = ""
         all_text = ""
