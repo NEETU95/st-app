@@ -90,12 +90,12 @@ def pdf_extraction(pdf_info:str):
             "parent": parent_extraction
         }
 
-
+        
         url = "https://demo.topiatech.co.uk/PV/createCaseAI"
-
+        print("=--------------------------------------------------------------------------------------------------------")
         # Send the POST request with JSON data
         response = requests.post(url, json=response)
-
+        print("*"*50)
         # Check the response status code
         if response.status_code == 200:
             # Request was successful
