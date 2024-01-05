@@ -79,7 +79,7 @@ def pdf_extraction(pdf_info:str):
             en_core=nlp,
             meta_data=meta
         )
-        print(general_extraction, reporter_extraction)
+        # print(general_extraction, reporter_extraction)
         patient_extraction = get_patient_text(source_text=all_text, en_core=nlp,bcd5r=nlp_1)
         parent_extraction = get_parent_text(source_text=all_text, en_core=nlp, bcd5r=nlp_1)
 
