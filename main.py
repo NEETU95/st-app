@@ -21,6 +21,16 @@ import gc
 
 
 @st.cache_resource()
+class CorsHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+
+    def options(self, *args):
+        self.set_header("Access-Control-Allow-Methods", "*")
+        self.set_header("Access-Control-Request-Credentials", "true")
+        self.set_header("Access-Control-Allow-Private-Network", "true")
+        self.set_header("Access-Control-Allow-Headers", "*")
+        self.set_status(204)  # No Content
 def setup_api_handler(uri, handler):
     print("Setup Tornado. Should be called only once")
 
@@ -30,7 +40,7 @@ def setup_api_handler(uri, handler):
     # Setup custom handler
     tornado_app.wildcard_router.rules.insert(0, Rule(PathMatches(uri), handler))
 # Tornado handler with PDF extraction functionality
-class PdfExtractionHandler(RequestHandler):
+class PdfExtractionHandler(CorsHandler):
     def get(self, pdf_info):
         try:
             self.set_header("Access-Control-Allow-Origin", "*")
@@ -136,7 +146,7 @@ def pdf_extraction(pdf_info: str):
 
 
 # New Tornado handler for handling GET requests
-class GetHandler(RequestHandler):
+class GetHandler(CorsHandler):
     def get(self, data):
         try:
             # Handle GET request logic here
