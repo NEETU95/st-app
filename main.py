@@ -31,7 +31,7 @@ def setup_api_handler(uri, handler):
     tornado_app.wildcard_router.rules.insert(0, Rule(PathMatches(uri), handler))
 # Tornado handler with PDF extraction functionality
 class PdfExtractionHandler(RequestHandler):
-    def post(self, pdf_info):
+    def get(self, pdf_info):
         try:
             self.set_header("Access-Control-Allow-Origin", "*")
             self.set_header("Access-Control-Allow-Headers", "x-requested-with")
