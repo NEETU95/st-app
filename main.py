@@ -19,13 +19,13 @@ import gc
 
 # C:\Users\kathiaja\Downloads\Pvtest-main\Pvtest-main\main.py
 
-st.set_page_config(
-    page_title="PV automation",
-    page_icon=":chart_with_upwards_trend:",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    enable_cors=True  # Enable CORS support
-)
+# st.set_page_config(
+#     page_title="PV automation",
+#     page_icon=":chart_with_upwards_trend:",
+#     layout="wide",
+#     initial_sidebar_state="expanded",
+#     enable_cors=True  # Enable CORS support
+# )
 
 
 
