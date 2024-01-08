@@ -86,7 +86,7 @@ def pdf_extraction(pdf_info:str):
         patient_extraction = get_patient_text(source_text=all_text, en_core=nlp,bcd5r=nlp_1)
         parent_extraction = get_parent_text(source_text=all_text, en_core=nlp, bcd5r=nlp_1)
 
-        response = {
+        response_for_extraction = {
             "general_information": general_extraction,
             "reporter": reporter_extraction,
             "patient": patient_extraction,
@@ -94,28 +94,29 @@ def pdf_extraction(pdf_info:str):
         }
 
         
-        url = "https://demo.topiatech.co.uk/PV/createCaseAI"
+        url = "https://demo1.topiatech.co.uk/PV/createCaseAI"
         print("=--------------------------------------------------------------------------------------------------------")
         # Send the POST request with JSON data
-        response = requests.post(url, json=response)
+        response = requests.post(url, json=response_for_extraction)
+        json_response_from_api = repsonse.json()
         print("*"*50)
         # Check the response status code
-        if response.status_code == 200:
+        if json_response_from_api['statusCode'] == 200:
             # Request was successful
             print("API request successful.")
             print("Status Code:", response.status_code)
             print("Response Headers:", response.headers)
-            return {'statusCode': 200,'body': json.dumps({ "data" : 'API request successful', "error " : { 'msg' :  str("Status Code: " + response.status_code)}, "status" : 5 })}
+            return {'statusCode': 200,'body': json.dumps({ "data" : 'API request successful', "error " : { 'msg' :  str("Status Code: " + json_response_from_api['statusCode'])}, "status" : json_response_from_api['statusCode'] })}
 
         else:
             # Request failed
-            print(f"API request failed with status code {response.status_code}: {response.text}")
-            print(response.text)
+            print(f"API request failed with status code {json_response_from_api['statusCode']}: {json_response_from_api['message']}")
+            print(json_response_from_api['message'])
 
     #   if ftp:
     #         ftp.close()
 
-        return {'statusCode': 200,'body': json.dumps({ "data" : 'API request failed ', "error " : { 'msg' :  str(f"API request failed with status code {response.status_code}: {response.text}")}, "status" : 5 })}
+        return {'statusCode': 200,'body': json.dumps({ "data" : 'API request Success ', "error " : { 'msg' :  str(f"API request success with status code {json_response_from_api['statusCode']}: {json_response_from_api['message']}")}, "status" : 5 })}
 
     except Exception as e:
         return {'statusCode': 200,'body': json.dumps({ "data" : 'failed ', "error " : { 'msg' :  str(e)}, "status" : 4 })}
