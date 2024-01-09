@@ -51,6 +51,9 @@ class PdfExtractionHandler(RequestHandler):
             self.set_status(500)
             self.write(f"Error processing PDF: {str(e)}")
 
+    def get(self, pdf_info):
+        return {'statusCode': 200, 'body': json.dumps({"data": 'get call ', "status": 4})}
+
 
 def pdf_extraction(pdf_info: str):
     print("pdf_info from method",pdf_info)
