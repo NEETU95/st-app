@@ -66,7 +66,7 @@ class PdfExtractionHandler(CorsMixin, RequestHandler):
         # Handle pre-flight OPTIONS request
         self.finish()
 
-    def get(self, pdf_info):
+    def post(self, pdf_info):
         self.write("This is your CORS-enabled response.")
 
         try:
