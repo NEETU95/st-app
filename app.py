@@ -176,4 +176,4 @@ class BaseHandler(tornado.web.RequestHandler):
 
 setup_api_handler('/api/pdf_extraction/([^/]+)?', PdfExtractionHandler)
 setup_api_handler('/api/get_demo/([^/]+)?', GetHandler)
-setup_api_handler('/api/demo/([^/]+)?', BaseHandler)
+setup_api_handler('/api/demo/', BaseHandler)
