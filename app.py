@@ -154,6 +154,26 @@ class GetHandler(RequestHandler):
             self.set_status(500)
             self.write(f"Error processing GET request: {str(e)}")
 
+class BaseHandler(tornado.web.RequestHandler):
+
+    def set_default_headers(self):
+        print "setting headers!!!"
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+
+    def post(self):
+        self.write('some post')
+
+    def get(self):
+        self.write('some get')
+
+    def options(self, *args):
+        # no body
+        # `*args` is for route with `path arguments` supports
+        self.set_status(204)
+        self.finish()
 
 setup_api_handler('/api/pdf_extraction/([^/]+)?', PdfExtractionHandler)
 setup_api_handler('/api/get_demo/([^/]+)?', GetHandler)
+setup_api_handler('/api/demo/([^/]+)?', BaseHandler)
