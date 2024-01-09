@@ -13,7 +13,7 @@ import tornado
 from tornado.web import RequestHandler, Application
 from tornado.routing import Rule, PathMatches
 import gc
-
+from tornado_cors import CorsMixin
 
 # Create a FastAPI instance
 
@@ -29,31 +29,53 @@ def setup_api_handler(uri, handler):
 
     # Setup custom handler
     tornado_app.wildcard_router.rules.insert(0, Rule(PathMatches(uri), handler))
-# Tornado handler with PDF extraction functionality
-class PdfExtractionHandler(RequestHandler):
-    def set_default_headers(self):
-        self.set_header("Access-Control-Allow-Origin", "*")
+    
+# # Tornado handler with PDF extraction functionality
+# class PdfExtractionHandler(RequestHandler):
+#     def set_default_headers(self):
+#         self.set_header("Access-Control-Allow-Origin", "*")
 
-    def options(self, *args):
-        self.set_header("Access-Control-Allow-Methods", "*")
-        self.set_header("Access-Control-Request-Credentials", "true")
-        self.set_header("Access-Control-Allow-Private-Network", "true")
-        self.set_header("Access-Control-Allow-Headers", "*")
-        self.set_status(204)  # No Content
+#     def options(self, *args):
+#         self.set_header("Access-Control-Allow-Methods", "*")
+#         self.set_header("Access-Control-Request-Credentials", "true")
+#         self.set_header("Access-Control-Allow-Private-Network", "true")
+#         self.set_header("Access-Control-Allow-Headers", "*")
+#         self.set_status(204)  # No Content
 
-    def post(self, pdf_info):
+#     def post(self, pdf_info):
+#         try:
+#             # Your existing pdf_extraction code
+#             # Replace 'pdf_info' with the actual value or information you want to pass
+#             pdf_extraction(pdf_info)
+
+#         except Exception as e:
+#             self.set_status(500)
+#             self.write(f"Error processing PDF: {str(e)}")
+
+#     def get(self, pdf_info):
+#         return {'statusCode': 200, 'body': json.dumps({"data": 'get call ', "status": 4})}
+
+class PdfExtractionHandler(CorsMixin, RequestHandler):
+    CORS_HEADERS = 'Content-Type, x-requested-with, origin, accept'
+
+    def initialize(self):
+        # Initialize CORS settings
+        self.initialize_cors(origin='*')  # Allow all origins
+
+    def options(self, *args, **kwargs):
+        # Handle pre-flight OPTIONS request
+        self.finish()
+
+    def get(self, pdf_info):
+        self.write("This is your CORS-enabled response.")
+
         try:
-            # Your existing pdf_extraction code
             # Replace 'pdf_info' with the actual value or information you want to pass
             pdf_extraction(pdf_info)
 
         except Exception as e:
             self.set_status(500)
             self.write(f"Error processing PDF: {str(e)}")
-
-    def get(self, pdf_info):
-        return {'statusCode': 200, 'body': json.dumps({"data": 'get call ', "status": 4})}
-
 
 def pdf_extraction(pdf_info: str):
     print("pdf_info from method",pdf_info)
